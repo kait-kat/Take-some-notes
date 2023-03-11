@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-app.use (express.static('root'));
+app.use (express.static('assets'));
 app.use('/', htmlRoutes);
 
 app.listen(PORT, () => {

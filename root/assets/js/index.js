@@ -10,21 +10,21 @@ app.use(express.json());
 app.use(express.static('assets'));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './root/index.html'));
+  res.sendFile(path.join(__dirname, '..', '..', 'index.html'));
 });
 
 app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, './root/notes.html'));
+  res.sendFile(path.join(__dirname, '..', '..', 'notes.html'));
 });
 
 router.get('/api/notes', (req, res) => {
-  const dbFilePath = path.join(__dirname, './db/db.json');
+  const dbFilePath = path.join(__dirname, '..', '..', 'db.json');
   const notes = JSON.parse(fs.readFileSync(dbFilePath));
   res.json(notes);
 });
 
 router.post('/api/notes', (req, res) => {
-  const dbFilePath = path.join(__dirname, './db/db.json');
+  const dbFilePath = path.join(__dirname, '..', '..', 'db.json');
   const notes = JSON.parse(fs.readFileSync(dbFilePath));
   const newNote = req.body;
   newNote.id = notes.length.toString();
@@ -34,7 +34,7 @@ router.post('/api/notes', (req, res) => {
 });
 
 router.delete('/api/notes/:id', (req, res) => {
-  const dbFilePath = path.join(__dirname, './db/db.json');
+  const dbFilePath = path.join(__dirname, '..', '..', 'db.json');
   const notes = JSON.parse(fs.readFileSync(dbFilePath));
   const noteId = req.params.id;
   const updatedNotes = notes.filter((note) => note.id !== noteId);
@@ -43,7 +43,7 @@ router.delete('/api/notes/:id', (req, res) => {
 });
 
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, './root/index.html'));
+  res.sendFile(path.join(__dirname, '..', '..', 'index.html'));
 });
 
 app.listen(PORT, () => {
