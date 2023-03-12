@@ -20,13 +20,13 @@ app.get('/notes', (req, res) => {
 });
 
 router.get('/api/notes', (req, res) => {
-  const dbFilePath = path.join(__dirname, '..', '..', 'db.json');
+  const dbFilePath = path.join(__dirname, '..', '..', 'db', 'db.json');
   const notes = JSON.parse(fs.readFileSync(dbFilePath));
   res.json(notes);
 });
 
 router.post('/api/notes', (req, res) => {
-  const dbFilePath = path.join(__dirname, '..', '..', 'db.json');
+  const dbFilePath = path.join(__dirname, '..', '..', 'db', 'db.json');
   const notes = JSON.parse(fs.readFileSync(dbFilePath));
   const newNote = req.body;
   newNote.id = notes.length.toString();
@@ -36,7 +36,7 @@ router.post('/api/notes', (req, res) => {
 });
 
 router.delete('/api/notes/:id', (req, res) => {
-  const dbFilePath = path.join(__dirname, '..', '..', 'db.json');
+  const dbFilePath = path.join(__dirname, '..', '..', 'db', 'db.json');
   const notes = JSON.parse(fs.readFileSync(dbFilePath));
   const noteId = req.params.id;
   const updatedNotes = notes.filter((note) => note.id !== noteId);
@@ -101,21 +101,6 @@ const deleteNote = (id) =>
     },
   });
 
-const renderActiveNote = () => {
-  hide(saveNoteBtn);
-
-  if (activeNote.id) {
-    noteTitle.setAttribute('readonly', true);
-    noteText.setAttribute('readonly', true);
-    noteTitle.value = activeNote.title;
-    noteText.value = activeNote.text;
-  } else {
-    noteTitle.removeAttribute('readonly');
-    noteText.removeAttribute('readonly');
-    noteTitle.value = '';
-    noteText.value = '';
-  }
-};
 
 const handleNoteSave = () => {
   const newNote = {
