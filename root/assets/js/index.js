@@ -9,7 +9,8 @@ import { getNotes, createNote, updateNote, deleteNote } from './notefunctions.js
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('assets'));
+app.use('/assets/css', express.static(__dirname + '/../css'));
+
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'index.html'));
