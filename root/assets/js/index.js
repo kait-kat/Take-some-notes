@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-
+const notes = require('./notes');
 const app = express();
 const PORT = process.env.PORT || 3001;
+import { getNotes, createNote, updateNote, deleteNote } from './notefunctions.js';
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -53,8 +55,6 @@ app.listen(PORT, () => {
 
 let noteTitle;
 let noteText;
-let saveNoteBtn;
-let newNoteBtn;
 let noteList;
 
 if (window.location.pathname === '/notes') {
