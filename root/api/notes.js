@@ -1,4 +1,3 @@
-import { getNotes, createNote, updateNote, deleteNote } from './assets/js/notefunctions.js';
 const notes = [];
 
 function getNotes() {

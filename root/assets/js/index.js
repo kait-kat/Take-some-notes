@@ -9,15 +9,17 @@ import { getNotes, createNote, updateNote, deleteNote } from './notefunctions.js
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/assets/css', express.static(__dirname + '/../css'));
-
+app.use(express.static(__dirname + '/../assets'));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'index.html'));
+  res.sendFile(path.join(__dirname, '/../pages/index.html'));
 });
+app.use('/css', express.static(__dirname + '/../assets/css'));
+app.use('/js', express.static(__dirname + '/../assets/js'));
+
 
 app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'notes.html'));
+  res.sendFile(path.join(__dirname, '../pages/notes.html'));
 });
 
 router.get('/api/notes', (req, res) => {
@@ -46,7 +48,7 @@ router.delete('/api/notes/:id', (req, res) => {
 });
 
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'index.html'));
+  res.sendFile(path.join(__dirname, '../pages/index.html'));
 });
 
 app.listen(PORT, () => {
@@ -77,14 +79,6 @@ const hide = (elem) => {
 
 let activeNote = {};
 
-const getNotes = () =>
-  fetch('/api/notes', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
 const saveNote = (note) =>
   fetch('/api/notes', {
     method: 'POST',
@@ -93,15 +87,6 @@ const saveNote = (note) =>
     },
     body: JSON.stringify(note),
   });
-
-const deleteNote = (id) =>
-  fetch(`/api/notes/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
 
 const handleNoteSave = () => {
   const newNote = {
