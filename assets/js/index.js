@@ -4,7 +4,6 @@ const fs = require('fs');
 const notes = require('../../api/notes.js');
 const app = express();
 const PORT = process.env.PORT || 3001;
-const noteFunction = require('./notefunctions.js');
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -55,6 +54,10 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
+const saveNoteBtn = document.querySelector('.save-note');
+saveNoteBtn.addEventListener('click', saveNote);
+const newNoteBtn = document.querySelector('.new-note');
+newNoteBtn.addEventListener('click', newNote);
 
 let noteTitle;
 let noteText;
@@ -188,12 +191,5 @@ const renderNoteList = async(notes) => {
 };
 
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
-
-if (window.location.pathname === '/notes') {
-  saveNoteBtn.addEventListener('click', handleNoteSave);
-  newNoteBtn.addEventListener('click', handleNewNoteView);
-  noteTitle.addEventListener('keyup', handleRenderSaveBtn);
-  noteText.addEventListener('keyup', handleRenderSaveBtn);
-}
 
 getAndRenderNotes();
