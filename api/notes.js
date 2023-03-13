@@ -18,9 +18,4 @@ function deleteNote(id) {
   notes.splice(noteIndex, 1);
 }
 
-module.exports = {
-  getNotes,
-  createNote,
-  updateNote,
-  deleteNote
-};
+module.exports = 'notes';

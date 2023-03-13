@@ -1,6 +1,7 @@
-const express = require('express');
+const express = require("express");
 const htmlRoutes = require('./routes/htmlRoutes');
 const path = require('path');
+const fs = require("fs");
 
 
 const app = express();
@@ -13,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
-app.use (express.static('assets'));
+app.use (express.static(__dirname));
 app.use('/', htmlRoutes);
 
 app.listen(PORT, () => {

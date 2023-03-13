@@ -1,25 +1,25 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const notes = require('./notes');
+const notes = require('../../api/notes.js');
 const app = express();
 const PORT = process.env.PORT || 3001;
-import { getNotes, createNote, updateNote, deleteNote } from './notefunctions.js';
+const noteFunction = require('./notefunctions.js');
 
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static(__dirname + '/../assets'));
+app.use(express.static(__dirname + '/../../assets'));
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/../pages/index.html'));
+  res.sendFile(path.join(__dirname, '/../../pages/index.html'));
 });
-app.use('/css', express.static(__dirname + '/../assets/css'));
-app.use('/js', express.static(__dirname + '/../assets/js'));
+app.use('/css', express.static(__dirname + '../css'));
+app.use('/js', express.static(__dirname + '../js'));
 
 
 app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, '../pages/notes.html'));
+  res.sendFile(path.join(__dirname, '../../pages/notes.html'));
 });
 
 router.get('/api/notes', (req, res) => {
@@ -48,7 +48,7 @@ router.delete('/api/notes/:id', (req, res) => {
 });
 
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../pages/index.html'));
+  res.sendFile(path.join(__dirname, '../../pages/index.html'));
 });
 
 app.listen(PORT, () => {
@@ -135,7 +135,7 @@ const handleRenderSaveBtn = () => {
   }
 };
 
-const renderNoteList = async (notes) => {
+const renderNoteList = async(notes) => {
   let jsonNotes = await notes.json();
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));

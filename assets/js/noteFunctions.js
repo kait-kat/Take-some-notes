@@ -3,3 +3,5 @@ saveNoteBtn.addEventListener('click', saveNote);
 const newNoteBtn = document.querySelector('.new-note');
 newNoteBtn.addEventListener('click', newNote);
 
+module.exports = noteFunction;
+
