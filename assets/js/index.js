@@ -21,13 +21,13 @@ app.get('/notes', (req, res) => {
   res.sendFile(path.join(__dirname, '../../pages/notes.html'));
 });
 
-router.get('/api/notes', (req, res) => {
+router.get('../../api/notes', (req, res) => {
   const dbFilePath = path.join(__dirname, '..', '..', 'db', 'db.json');
   const notes = JSON.parse(fs.readFileSync(dbFilePath));
   res.json(notes);
 });
 
-router.post('/api/notes', (req, res) => {
+router.post('../../api/notes', (req, res) => {
   const dbFilePath = path.join(__dirname, '..', '..', 'db', 'db.json');
   const notes = JSON.parse(fs.readFileSync(dbFilePath));
   const newNote = req.body;
@@ -37,7 +37,7 @@ router.post('/api/notes', (req, res) => {
   res.json(newNote);
 });
 
-router.delete('/api/notes/:id', (req, res) => {
+router.delete('../../api/notes/:id', (req, res) => {
   const dbFilePath = path.join(__dirname, '..', '..', 'db', 'db.json');
   const notes = JSON.parse(fs.readFileSync(dbFilePath));
   const noteId = req.params.id;
@@ -54,11 +54,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-const saveNoteBtn = document.querySelector('.save-note');
-saveNoteBtn.addEventListener('click', saveNote);
-const newNoteBtn = document.querySelector('.new-note');
-newNoteBtn.addEventListener('click', newNote);
-
 let noteTitle;
 let noteText;
 let noteList;
@@ -66,21 +61,28 @@ let noteList;
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
   noteText = document.querySelector('.note-textarea');
-  saveNoteBtn = document.querySelector('.save-note');
-  newNoteBtn = document.querySelector('.new-note');
+  let saveNoteBtn = document.querySelector('.save-note');
+  let newNoteBtn = document.querySelector('.new-note');
   noteList = document.querySelectorAll('.list-container .list-group');
+
+  saveNoteBtn.addEventListener('click', () => {
+    console.log('Note saved!');
+  });
+
+  newNoteBtn.addEventListener('click', () => {
+    console.log('New note!');
+  });
 }
 
-
-const show = (elem) => {
-  elem.style.display = 'inline';
-};
-
-const hide = (elem) => {
-  elem.style.display = 'none';
-};
-
 let activeNote = {};
+
+const getNotes = () =>
+  fetch('../../api/notes', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
 const saveNote = (note) =>
   fetch('/api/notes', {
@@ -91,18 +93,26 @@ const saveNote = (note) =>
     body: JSON.stringify(note),
   });
 
-const handleNoteSave = () => {
-  const newNote = {
-    title: noteTitle.value,
-    text: noteText.value,
-  };
-  saveNote(newNote).then(() => {
-    getAndRenderNotes();
-    renderActiveNote();
+  const deleteNote = (id) =>
+  fetch(`../../api/notes/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
-};
 
+  const handleNoteSave = () => {
+    const newNote = {
+      title: noteTitle.value,
+      text: noteText.value,
+    };
+    saveNote(newNote).then(() => {
+      getAndRenderNotes();
+      renderActiveNote();
+    });
+  };
 
+  
 const handleNoteDelete = (e) => {
   e.stopPropagation();
 
@@ -117,25 +127,6 @@ const handleNoteDelete = (e) => {
     getAndRenderNotes();
     renderActiveNote();
   });
-};
-
-const handleNoteView = (e) => {
-  e.preventDefault();
-  activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
-  renderActiveNote();
-};
-
-const handleNewNoteView = (e) => {
-  activeNote = {};
-  renderActiveNote();
-};
-
-const handleRenderSaveBtn = () => {
-  if (!noteTitle.value.trim() || !noteText.value.trim()) {
-    hide(saveNoteBtn);
-  } else {
-    show(saveNoteBtn);
-  }
 };
 
 const renderNoteList = async(notes) => {
@@ -153,7 +144,7 @@ const renderNoteList = async(notes) => {
     const spanEl = document.createElement('span');
     spanEl.classList.add('list-item-title');
     spanEl.innerText = text;
-    spanEl.addEventListener('click', handleNoteView);
+    spanEl.addEventListener('click');
 
     liEl.append(spanEl);
 
