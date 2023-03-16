@@ -6,6 +6,10 @@ An application that allows the user to easily write out notes and save them to a
 
 ## User Story
 
+AS A person who likes to not forget things
+I WANT a note taking application
+SO THAT I can easily and quickly jot down a note I can save for future use
+
 ## Installation
 
 To install all the required dependencies just run ```npm install``` in your main directory, the package.json should have everything you need. 
